@@ -12,7 +12,7 @@ router = APIRouter(prefix="/auth/discord", tags=["auth_discord"])
 
 CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
-REDIRECT_URI = "http://localhost:8080/auth/discord/callback"
+REDIRECT_URI = os.getenv("REDIRECT_URI_DISCORD")
 SCOPES = "identify email guilds"
 
 
@@ -66,4 +66,4 @@ async def callback(request: Request, db: Session = Depends(get_db)):
 
     jwt = process_oauth_login(db, "discord", user_info, token_data, state)
 
-    return RedirectResponse(f"http://localhost:8081/login?token={jwt}")
+    return RedirectResponse(f"{os.getenv('FRONTEND_URL')}/login?token={jwt}")

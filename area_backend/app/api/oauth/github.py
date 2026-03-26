@@ -11,7 +11,7 @@ router = APIRouter(prefix="/auth/github", tags=["auth_github"])
 
 CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
 CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
-REDIRECT_URI = "http://localhost:8080/auth/github/callback"
+REDIRECT_URI = os.getenv("REDIRECT_URI_GITHUB")
 
 
 def get_db():
@@ -65,4 +65,4 @@ async def callback(request: Request, db: Session = Depends(get_db)):
 
     jwt = process_oauth_login(db, "github", user_info, token_data, state)
 
-    return RedirectResponse(f"http://localhost:8081/login?token={jwt}")
+    return RedirectResponse(f"{os.getenv('FRONTEND_URL')}/login?token={jwt}")

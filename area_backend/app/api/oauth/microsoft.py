@@ -11,7 +11,7 @@ router = APIRouter(prefix="/auth/microsoft", tags=["auth_microsoft"])
 
 CLIENT_ID = os.getenv("MICROSOFT_CLIENT_ID")
 CLIENT_SECRET = os.getenv("MICROSOFT_CLIENT_SECRET")
-REDIRECT_URI = "http://localhost:8080/auth/microsoft/callback"
+REDIRECT_URI = os.getenv("REDIRECT_URI_MICROSOFT")
 
 SCOPES = "User.Read Mail.Read Mail.Send Files.ReadWrite.All offline_access"
 
@@ -76,4 +76,4 @@ async def callback(request: Request, db: Session = Depends(get_db)):
 
     jwt = process_oauth_login(db, "microsoft", user_info, token_data, state)
 
-    return RedirectResponse(f"http://localhost:8081/login?token={jwt}")
+    return RedirectResponse(f"{os.getenv('FRONTEND_URL')}/login?token={jwt}")

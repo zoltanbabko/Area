@@ -40,7 +40,7 @@ _REGISTERED_SERVICES = [
 
 api = FastAPI(title="AREA Backend")
 
-origins = ["*"]
+origins = ["https://area-x5nk.onrender.com"]
 
 api.add_middleware(
     CORSMiddleware,

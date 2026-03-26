@@ -12,7 +12,7 @@ router = APIRouter(prefix="/auth/google", tags=["auth_google"])
 
 CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
-REDIRECT_URI = "http://localhost:8080/auth/google/callback"
+REDIRECT_URI = os.getenv("REDIRECT_URI_GOOGLE")
 SCOPES = "openid email profile " \
          "https://www.googleapis.com/auth/gmail.readonly " \
          "https://www.googleapis.com/auth/gmail.send " \
@@ -72,4 +72,4 @@ async def callback(request: Request, db: Session = Depends(get_db)):
 
     jwt = process_oauth_login(db, "google", user_info, token_data, state)
 
-    return RedirectResponse(f"http://localhost:8081/login?token={jwt}")
+    return RedirectResponse(f"{os.getenv('FRONTEND_URL')}/login?token={jwt}")

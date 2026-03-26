@@ -55,7 +55,7 @@ export default function Login() {
 
         <button 
           className="btn btn-secondary btn-block"
-          onClick={() => window.location.href = "http://localhost:8080/auth/google/login"}
+          onClick={() => window.location.href = `${import.meta.env.VITE_API_URL}/auth/google/login`}
         >
           <img src="https://www.google.com/favicon.ico" alt="G" style={{width: 16, height: 16}} />
           Sign in with Google

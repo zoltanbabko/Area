@@ -35,7 +35,7 @@ export default function Services() {
             toast("No authentication required for this service.", { icon: 'ℹ️' });
             return; 
         }
-        window.location.href = `http://localhost:8080/auth/${authProvider}/login?user_id=${userId}`;
+        window.location.href = `${import.meta.env.VITE_API_URL}/auth/${authProvider}/login?user_id=${userId}`;
     };
 
     if (loading) return <div className="container-center">Loading services...</div>;
