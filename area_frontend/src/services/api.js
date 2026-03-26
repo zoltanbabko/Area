@@ -2,7 +2,7 @@ import axios from "axios";
 
 const hostname = window.location.hostname;
 
-const API_URL = `https://area-backend-9vij.onrender.com/api/`;
+const API_URL = `https://area-backend-9vij.onrender.com/`;
 
 const api = axios.create({ baseURL: API_URL });
 
