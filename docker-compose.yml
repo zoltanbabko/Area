@@ -1,0 +1,61 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build: area_backend
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./area_backend/app:/app/app:z
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      SECRET_KEY : ${SECRET_KEY}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
+      OPENWEATHER_API_KEY: ${OPENWEATHER_API_KEY}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+      MICROSOFT_CLIENT_ID: ${MICROSOFT_CLIENT_ID}
+      MICROSOFT_CLIENT_SECRET: ${MICROSOFT_CLIENT_SECRET}
+    command: uvicorn app.main:api --host 0.0.0.0 --port 8080 --reload
+    depends_on:
+      db:
+        condition: service_healthy
+
+  client_mobile:
+    build: area_mobile
+    platform: linux/amd64
+    volumes:
+      - shared_web_data:/shared
+    depends_on:
+      - server
+
+  client_web:
+    build: area_frontend
+    ports:
+      - "8081:80"
+    volumes:
+      - shared_web_data:/usr/share/nginx/html/mobile_builds
+    depends_on:
+      - server
+      - client_mobile
+
+volumes:
+  pgdata:
+  shared_web_data:

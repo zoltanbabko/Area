@@ -1,0 +1,13 @@
+__pycache__/
+build/
+lib/
+var/
+
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+.DS_Store
+.vscode/

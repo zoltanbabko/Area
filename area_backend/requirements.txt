@@ -1,0 +1,12 @@
+sqlalchemy
+fastapi
+uvicorn
+requests
+python-dotenv
+itsdangerous
+httpx
+psycopg2-binary
+apscheduler
+python-jose
+passlib
+python-multipart
